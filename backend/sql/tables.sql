@@ -5,5 +5,8 @@ CREATE TABLE IF NOT EXISTS tasks (
   start_time DATETIME,
   end_time DATETIME,
   work_length INTEGER,
-  break_length INTEGER
+  break_length INTEGER,
+  category TEXT,
+  ended_early BOOLEAN,
+  early_termination_time DATETIME
 )

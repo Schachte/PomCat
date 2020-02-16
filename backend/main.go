@@ -3,7 +3,6 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
 
@@ -18,7 +17,7 @@ func main() {
 	dbWrapper := *database.InitializeDatabase("./pomodoro.db")
 
 	multiplexer := router.InitializeRouter(dbWrapper.Db)
-	initializeRoutes(multiplexer, dbWrapper.Db)
+	initializeRoutes(multiplexer, &dbWrapper)
 
 	//TODO: Update to loading port via env variables
 	if err := http.ListenAndServe(":8180", multiplexer); err != nil {
@@ -28,6 +27,6 @@ func main() {
 
 // Handles the initialization of all routes within the application to be
 // registered within the custom multiplexer/router
-func initializeRoutes(multiplexer *router.CustomRouter, db *sql.DB) {
-	multiplexer.POST("storeTask", router.StoreTask(db))
+func initializeRoutes(multiplexer *router.CustomRouter, dbWrapper *database.DB) {
+	multiplexer.POST("storeTask", router.StoreTask(dbWrapper))
 }
