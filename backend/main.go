@@ -13,20 +13,16 @@ import (
 )
 
 func main() {
-	// database instance
 	dbWrapper := *database.InitializeDatabase("./pomodoro.db")
 
 	multiplexer := router.InitializeRouter(dbWrapper.Db)
 	initializeRoutes(multiplexer, &dbWrapper)
 
-	//TODO: Update to loading port via env variables
 	if err := http.ListenAndServe(":8180", multiplexer); err != nil {
 		log.Fatal(err)
 	}
 }
 
-// Handles the initialization of all routes within the application to be
-// registered within the custom multiplexer/router
 func initializeRoutes(multiplexer *router.CustomRouter, dbWrapper *database.DB) {
 	multiplexer.POST("storeTask", router.StoreTask(dbWrapper))
 }
